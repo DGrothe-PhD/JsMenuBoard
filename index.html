@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>_/.</title>
+    <link rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+    .unnecessary{
+        font-style:italic;
+     }
+    </style>
+  </head>
+  <body>
+    <h1>Kleine JavaScript-Übung</h1>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <input type="file" onchange="loadFile(this.files[0])">
+    <br>
+    <pre id="output" class="bg-light unnecessary"></pre>
+    <!--<div id="json"><embed id="abc" type="text" src="./menuOrdered.json" width="500" height="200"></embed></div>-->
+    <script>
+      async function loadFile(file) {
+        let text = await file.text();
+        document.getElementById('output').textContent = text;
+      }
+      async function loadJson(file) {
+        const response = await fetch(file);
+        let text = await response.json();
+        return text;
+      }
+    </script>
+    
+    <script>
+    function speak(whatToSay) { 
+    var msg = new SpeechSynthesisUtterance();
+    msg.text = whatToSay;
+    //msg.lang = 'en-US';
+    msg.volume = 1; // 0 to 1
+    msg.rate = 1; // 0.1 to 10
+    msg.pitch = 2; //0 to 2
+
+    msg.onend = function(e) {
+      document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
+    };
+
+    speechSynthesis.speak(msg);  
+  }
+  
+  function extractDishes(){
+  //let filetext = loadJson("http://127.0.0.1:9999/menuOrdered2.json");
+  //filetext=document.getElementById('output').textContent;
+  //local CORS error. :-/
+  //so let's mock the json fetching.
+  
+  let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"}, "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"}, "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
+  var info = JSON.parse(filetext);
+  //return;
+  for ( let x in info){
+    s = info[x]
+	try{
+	speak(`${s["date"]}: ${s["description"]} `+
+    ` ${s["amount"]}-mal.`);
+	}
+	catch(error){
+    console.log(`${s["date"]}: ${s["description"]} `+
+    ` ${s["amount"]}-mal.`);
+    }
+  }
+  }
+  </script>
+  
+  <div id="player" class="bg-info container">
+  <h2>Speisekarte der kommenden Woche</h2>
+  <p>&nbsp;<br/>coming soon &#133;</p>
+  <button onClick="speak(`Die Speisekarte der Woche.`);">Vorlesen</button>
+  <button onClick="extractDishes();">Info extrahieren</button>
+  </div>
+  </body>
+</html>
