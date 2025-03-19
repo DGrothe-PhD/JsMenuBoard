@@ -31,8 +31,11 @@
       }
     </script>
     
-    <script>
-    function speak(whatToSay) { 
+  <script>
+  var isTalking = false;
+  var isPaused = false;
+  
+  function speak(whatToSay) { 
     var msg = new SpeechSynthesisUtterance();
     msg.text = whatToSay;
     //msg.lang = 'en-US';
@@ -43,30 +46,62 @@
     msg.onend = function(e) {
       document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
     };
+    isTalking = true;
+    speechSynthesis.speak(msg);
+    return new Promise((resolve, reject) => {
+      msg.onend = () => {resolve()}
+    })
+  }
+  
 
-    speechSynthesis.speak(msg);  
+  function stopReading() { 
+    if(!isTalking) return;
+    speechSynthesis.cancel();
+    isTalking = false;
+    isPaused = false;
   }
   
-  function extractDishes(){
-  //let filetext = loadJson("http://127.0.0.1:9999/menuOrdered2.json");
-  //filetext=document.getElementById('output').textContent;
-  //local CORS error. :-/
-  //so let's mock the json fetching.
-  
-  let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"}, "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"}, "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
-  var info = JSON.parse(filetext);
-  //return;
-  for ( let x in info){
-    s = info[x]
-	try{
-	speak(`${s["date"]}: ${s["description"]} `+
-    ` ${s["amount"]}-mal.`);
-	}
-	catch(error){
-    console.log(`${s["date"]}: ${s["description"]} `+
-    ` ${s["amount"]}-mal.`);
+  function pauseOrResumeReading(){
+    if(!isTalking) return;
+    if(isPaused){
+      document.querySelector('#output').innerText = "Und weiter";
+      speechSynthesis.resume();
     }
+    else{
+      document.querySelector('#output').innerText = "Pausiert";
+      speechSynthesis.pause();
+    }
+    isPaused = !isPaused;
   }
+  
+  
+  async function extractDishes(){
+    //let filetext = loadJson("http://127.0.0.1:9999/menuOrdered2.json");
+    //filetext=document.getElementById('output').textContent;
+    //local CORS error. :-/
+    //so let's mock the json fetching.
+    document.getElementById("Dishes").setAttribute("disabled", "disabled");
+    document.getElementById("Pause").removeAttribute("disabled");
+    isTalking = true;
+    isPaused = false;
+    let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"}, "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"}, "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
+    var info = JSON.parse(filetext);
+  
+    for ( let x in info){
+      s = info[x]
+      try{
+        if(!isPaused && isTalking){
+          await speak(`${s["date"]}: ${s["description"]} `+
+          ` ${s["amount"]}-mal.`);
+        }
+      }
+      catch(error){
+        console.log(`${s["date"]}: ${s["description"]} `+
+        ` ${s["amount"]}-mal.`);
+      }
+    }
+    document.getElementById("Dishes").removeAttribute("disabled");
+    document.getElementById("Pause").setAttribute("disabled", "disabled");
   }
   </script>
   
@@ -74,7 +109,10 @@
   <h2>Speisekarte der kommenden Woche</h2>
   <p>&nbsp;<br/>coming soon &#133;</p>
   <button onClick="speak(`Die Speisekarte der Woche.`);">Vorlesen</button>
-  <button onClick="extractDishes();">Info extrahieren</button>
+  <br><br>
+  <button id="Dishes" onClick="extractDishes();">Info sprechen</button>&nbsp;&nbsp;
+  <button onClick="stopReading();">&#x23F9;</button>&nbsp;&nbsp;
+  <button id="Pause" onClick="pauseOrResumeReading();">&#x23f8;/&#x23F5;</button>
   </div>
   </body>
 </html>
