@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>_/.</title>
+    <title>2 Load Json using Fetch</title>
     <link rel="stylesheet" 
     href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
@@ -13,15 +13,15 @@
     </style>
   </head>
   <body>
-    <h1>Kleine JavaScript-Übung</h1>
+    <h1>2 Load Json by Fetch</h1>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <input type="file" onchange="loadFile(this.files[0])">
     <br>
     <pre id="output" class="bg-light unnecessary"></pre>
     <!--
-	<div id="json"><embed id="abc" type="text" src="./menuOrdered.json" width="500" height="200"></embed>
-	</div>
-	-->
+    <div id="json"><embed id="abc" type="text" src="./menuOrdered.json" width="500" height="200"></embed>
+    </div>
+    -->
     <script>
       async function loadFile(file) {
         let text = await file.text();
@@ -84,12 +84,16 @@
     document.getElementById("Pause").removeAttribute("disabled");
     isTalking = true;
     isPaused = false;
+    // Now big thing: I have stored a Json file which I want to use here.
+    // It's at the same path as this index.html file, but its name is menuOrdered.json.
+    // Looks quite easy:
     //
-    //main branch version
-    //so let's mock the json fetching by pasting it right here.
-    let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"}, "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"}, "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
-    //
+    // (2)
+    let filetext = await fetch('./menuOrdered.json');
+
     // Now we go on, parsing and using its content for the screenreader.
+    // Puzzled...
+    console.log(filetext);
     var info = JSON.parse(filetext);
   
     for ( let x in info){
