@@ -1,4 +1,6 @@
 import json
+from datetime import date
+import holidays
 
 # going to paste next week's email raw text here.
 rawTextInfo="""
@@ -25,6 +27,13 @@ Deftiger Erbseneintopf
 Gekochte Eier
 	M2 	Mehrweg 	10,50 € 	21,00 €
 """
+
+# Holidays
+jahr2025 = holidays.DE(years=2025)
+# {datetime.date(2025, 1, 1): 'Neujahr', datetime.date(2025, 4, 18): 'Karfreitag', ...}
+# Answer when is Easter:
+#[k for k,v in jahr2025.items() if "Oster" in v or "Kar" in v]
+
 
 # Convert raw text to json
 WhatTheyOrdered = {}
