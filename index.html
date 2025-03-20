@@ -74,30 +74,42 @@
     isPaused = !isPaused;
   }
   
+  const weekdays = {"Mo": "Montag", "Di": "Dienstag", 
+    "Mi": "Mittwoch", "Do": "Donnerstag", "Fr": "Freitag",
+    "Sa": "Samstag", "So": "Sonntag"
+  };
+  const nWords = ["ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn"];
+  
+  function howMany(i){
+    if(i<11) return `${nWords[i-1]}mal`;
+    return `${i}-mal`;
+  };
   
   async function extractDishes(){
-    //let filetext = loadJson("http://127.0.0.1:9999/menuOrdered2.json");
-    //filetext=document.getElementById('output').textContent;
-    //local CORS error. :-/
-    //so let's mock the json fetching.
     document.getElementById("Dishes").setAttribute("disabled", "disabled");
     document.getElementById("Pause").removeAttribute("disabled");
     isTalking = true;
     isPaused = false;
-    let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"}, "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"}, "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
+    let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, 
+     "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"},
+     "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"},
+     "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, 
+     "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, 
+     "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, 
+     "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
     var info = JSON.parse(filetext);
   
     for ( let x in info){
       s = info[x]
+      let formattedText = `${weekdays[s["date"]]}: ${s["description"]} `+
+          ` ${howMany(s["amount"])}.`;
       try{
         if(!isPaused && isTalking){
-          await speak(`${s["date"]}: ${s["description"]} `+
-          ` ${s["amount"]}-mal.`);
+          await speak(formattedText);
         }
       }
       catch(error){
-        console.log(`${s["date"]}: ${s["description"]} `+
-        ` ${s["amount"]}-mal.`);
+        console.log(formattedText);
       }
     }
     document.getElementById("Dishes").removeAttribute("disabled");
