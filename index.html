@@ -30,101 +30,20 @@
         return text;
       }
     </script>
-    
+  
+  <script src="./jsonConverter.js"></script>
   <script>
-  var isTalking = false;
-  var isPaused = false;
-  
-  function speak(whatToSay) { 
-    var msg = new SpeechSynthesisUtterance();
-    msg.text = whatToSay;
-    //msg.lang = 'en-US';
-    msg.volume = 1; // 0 to 1
-    msg.rate = 1; // 0.1 to 10
-    msg.pitch = 2; //0 to 2
 
-    msg.onend = function(e) {
-      document.querySelector('#output').innerText = (event.elapsedTime/1000) + ' Sek';
-    };
-    isTalking = true;
-    speechSynthesis.speak(msg);
-    return new Promise((resolve, reject) => {
-      msg.onend = () => {resolve()}
-    })
-  }
-  
-
-  function stopReading() { 
-    if(!isTalking) return;
-    speechSynthesis.cancel();
-    isTalking = false;
-    isPaused = false;
-  }
-  
-  function pauseOrResumeReading(){
-    if(!isTalking) return;
-    if(isPaused){
-      document.querySelector('#output').innerText = "Und weiter";
-      speechSynthesis.resume();
-    }
-    else{
-      document.querySelector('#output').innerText = "Pausiert";
-      speechSynthesis.pause();
-    }
-    isPaused = !isPaused;
-  }
-  
-  const weekdays = {"Mo": "Montag", "Di": "Dienstag", 
-    "Mi": "Mittwoch", "Do": "Donnerstag", "Fr": "Freitag",
-    "Sa": "Samstag", "So": "Sonntag"
-  };
-  const nWords = ["ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn"];
-  
-  function howMany(i){
-    if(i<11) return `${nWords[i-1]}mal`;
-    return `${i}-mal`;
-  };
-  
-  async function extractDishes(){
-    document.getElementById("Dishes").setAttribute("disabled", "disabled");
-    document.getElementById("Pause").removeAttribute("disabled");
-    isTalking = true;
-    isPaused = false;
-    let filetext = `{"1": {"date": "Mo", "number": "M5", "description": "Maultaschen (vegetarisch)", "amount": "2"}, 
-     "2": {"date": "Di", "number": "M4", "description": "Klassischer Sauerbraten", "amount": "1"},
-     "3": {"date": "Di", "number": "M2", "description": "Schweinegulasch", "amount": "1"},
-     "4": {"date": "Mi", "number": "M2", "description": "Bratwurst", "amount": "2"}, 
-     "5": {"date": "Do", "number": "M8", "description": "Germkn\u00f6del", "amount": "1"}, 
-     "6": {"date": "Do", "number": "M6", "description": "Deftiger Erbseneintopf", "amount": "1"}, 
-     "7": {"date": "Fr", "number": "M2", "description": "Gekochte Eier", "amount": "2"}}`
-    var info = JSON.parse(filetext);
-  
-    for ( let x in info){
-      s = info[x]
-      let formattedText = `${weekdays[s["date"]]}: ${s["description"]} `+
-          ` ${howMany(s["amount"])}.`;
-      try{
-        if(!isPaused && isTalking){
-          await speak(formattedText);
-        }
-      }
-      catch(error){
-        console.log(formattedText);
-      }
-    }
-    document.getElementById("Dishes").removeAttribute("disabled");
-    document.getElementById("Pause").setAttribute("disabled", "disabled");
-  }
   </script>
   
   <div id="player" class="bg-info container">
   <h2>Speisekarte der kommenden Woche</h2>
-  <p>&nbsp;<br/>coming soon &#133;</p>
+  <p>&nbsp;<br/><img style="width:50%" src="./FoodEmojis.png" alt="Guten Appetit!"><br><hr></p>
   <button onClick="speak(`Die Speisekarte der Woche.`);">Vorlesen</button>
   <br><br>
   <button id="Dishes" onClick="extractDishes();">Info sprechen</button>&nbsp;&nbsp;
   <button onClick="stopReading();">&#x23F9;</button>&nbsp;&nbsp;
-  <button id="Pause" onClick="pauseOrResumeReading();">&#x23f8;/&#x23F5;</button>
+  <button id="Pause" onClick="pauseOrResumeReading();">&#x23f8;/&#x25B6;</button>
   </div>
   </body>
 </html>

@@ -29,12 +29,15 @@ Gekochte Eier
 # Convert raw text to json
 WhatTheyOrdered = {}
 
-def add_menu(i, date, number, description, amount):
+def add_menu(i, dayOfWeek, date, number, 
+    description, amount, price):
     WhatTheyOrdered[str(i)] = {\
+        "dayOfWeek" : dayOfWeek,\
         "date" : date,\
         "number" : number,\
         "description" :  description,\
-        "amount" : amount\
+        "amount" : amount,\
+        "price" : price\
     }
 
 i = 0
@@ -47,14 +50,16 @@ for line in rawTextInfo.split("\n"):
     if line.startswith("KW"):
         continue
     if line[0].isdigit():
-        date = line[4:6]
+        dayOfWeek = line[4:6]
+        date = line.split('\t')[1].rstrip().split(" ")[1]
         amount = line[-3:].strip()
         continue
     if line[0] == '\t':
         number = line[1:4].rstrip()
+        price = line.split('\t')[-1]
         # so here we go.
         i += 1
-        add_menu(i, date, number, description, amount)
+        add_menu(i, dayOfWeek, date, number, description, amount, price)
     description = line.rstrip()
     #add_menu(i, date, number, description, amount)
     
