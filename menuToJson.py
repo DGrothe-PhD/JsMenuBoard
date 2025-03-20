@@ -29,7 +29,16 @@ Gekochte Eier
 """
 
 # Holidays
-jahr2025 = holidays.DE(years=2025)
+holidayList = {}
+for y in range(2025, 2035):
+    hlist = holidays.DE(years=y)
+    holidayList[str(y)] = {"{:%d.%m.%Y}".format(k): v for k, v in hlist.items()}
+
+jsonHolidays = json.dumps(holidayList)
+
+with open("./holidays2025-2034.json", "w") as outputFile:
+    outputFile.writelines(jsonHolidays)
+
 # {datetime.date(2025, 1, 1): 'Neujahr', datetime.date(2025, 4, 18): 'Karfreitag', ...}
 # Answer when is Easter:
 #[k for k,v in jahr2025.items() if "Oster" in v or "Kar" in v]

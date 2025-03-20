@@ -7,9 +7,16 @@
     <link rel="stylesheet" 
     href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
+    div {
+      padding-top:1em;
+      padding-bottom:1em;
+    }
     .unnecessary{
-        font-style:italic;
+      font-style:italic;
      }
+    .forest{
+      background-color:forestgreen;
+    }
     </style>
   </head>
   <body>
@@ -45,5 +52,12 @@
   <button onClick="stopReading();">&#x23F9;</button>&nbsp;&nbsp;
   <button id="Pause" onClick="pauseOrResumeReading();">&#x23f8;/&#x25B6;</button>
   </div>
+  <br>
+  <div class="forest container">
+  <input id="feiertage_jahr" type="number" min="2025" max="2034" step="1" value="2025">&nbsp;Jahr</input>
+  <!-- in case of error, place script here and add defer keyword-->
+  <button id="showHolidays" onClick="showHolidays();">Feiertage zeigen</button>
+  <div id="holidays"></div>
+  <script src="./holidays.js"></script>
   </body>
 </html>

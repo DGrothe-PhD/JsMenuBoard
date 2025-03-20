@@ -73,3 +73,4 @@ async function extractDishes(){
   document.getElementById("Dishes").removeAttribute("disabled");
   document.getElementById("Pause").setAttribute("disabled", "disabled");
 }
+
