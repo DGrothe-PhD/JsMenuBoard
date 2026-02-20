@@ -1,0 +1,143 @@
+:root {
+  --accent: #e67e22;
+  --bg: #fafafa;
+  --fg: #197b24;
+  --link: #e65e12;
+  --border: #ddd;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --fg: #72ae32;
+    --link: Tomato;
+    --border: #333;
+  }
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  --bg: #121212;
+  --fg: #72ae32;
+  --link: Tomato;
+  --border: #333;
+}
+
+header {
+  /*background: var(--accent);*/
+  color: #222;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background-image: 
+    linear-gradient(rgba(187, 42, 0, 0), rgba(187, 42, 0, 0.17)),
+    url('../assets/images/wood.png');
+  background-size: cover;
+  background-position: center;
+}
+
+header.dark-mode {
+  color: white;
+  background-image: 
+    linear-gradient(rgba(187, 42, 0, 0), rgba(187, 42, 0, 0.17)),
+    url('../assets/images/wood.png');
+}
+
+header.dark-mode nav a {
+  color: white;
+}
+
+/* Dark mode icon adjustment */
+#theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em;
+}
+
+/* header's dark mode class applied to inner id */
+header.dark-mode #theme-toggle {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em;
+}
+
+#theme-toggle .icon {
+  width: 42px;
+  height: 42px;
+  stroke-width: 1.75;
+  transition: transform 0.3s ease;
+}
+
+#theme-toggle:active .icon {
+  transform: rotate(20deg);
+}
+
+div {
+  padding-top:1em;
+  padding-bottom:1em;
+}
+
+h2{
+  margin-top: 0;
+}
+p {
+  margin-bottom: 0;
+}
+
+.unnecessary{
+  font-style:italic;
+}
+.cyan{
+  background-color: #17A2B8;
+}
+
+.forest{
+  background-color: forestgreen;
+}
+
+.container {
+  max-width: 900px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1em 1em;
+  border-radius: 8px;
+  /*box-shadow: 0 2px 8px rgba(0,0,0,0.08);*/
+}
+
+.cardshape{
+  border: 2px solid #888;
+  border-radius: 17px;
+  padding-bottom: 1rem;
+  /*width: 30%;*/
+  /*max-width: 450px;*/
+  padding-left: 1em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  /*background-image: 
+    linear-gradient(rgba(255, 255, 255, 0), rgba(42, 42, 42, 0), rgba(42, 42, 42, 0.17));
+  */
+}
+
+.forest > label{
+  color: white;
+}
+
+.cyan > h1, h2{
+  color: white;
+}
+
+.content {
+  color: white;
+}

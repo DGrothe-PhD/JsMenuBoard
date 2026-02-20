@@ -4,27 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>_/.</title>
-    <link rel="stylesheet" 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style>
-    div {
-      padding-top:1em;
-      padding-bottom:1em;
-    }
-    .unnecessary{
-      font-style:italic;
-     }
-    .forest{
-      background-color:forestgreen;
-    }
-    </style>
+    <!--<link rel="stylesheet" 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="./style/indexstyle.css">
   </head>
   <body>
+    <div class="container">
     <h1>Kleine JavaScript-Übung</h1>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <input type="file" onchange="loadFile(this.files[0])">
     <br>
     <pre id="output" class="bg-light unnecessary"></pre>
+    </div>
     <!--<div id="json"><embed id="abc" type="text" src="./menuOrdered.json" width="500" height="200"></embed></div>-->
     <script>
       async function loadFile(file) {
@@ -39,11 +30,8 @@
     </script>
   
   <script src="./jsonConverter.js"></script>
-  <script>
-
-  </script>
   
-  <div id="player" class="bg-info container">
+  <div id="player" class="cyan cardshape container">
   <h2>Speisekarte der kommenden Woche</h2>
   <p>&nbsp;<br/><img style="width:50%" src="./FoodEmojis.png" alt="Guten Appetit!"><br><hr></p>
   <button onClick="speak(`Die Speisekarte der Woche.`);">Vorlesen</button>
@@ -53,8 +41,9 @@
   <button id="Pause" onClick="pauseOrResumeReading();">&#x23f8;/&#x25B6;</button>
   </div>
   <br>
-  <div class="forest container">
-  <input id="feiertage_jahr" type="number" min="2025" max="2034" step="1" value="2025">&nbsp;Jahr</input>
+  <div class="forest cardshape container">
+  <label for="feiertage_jahr">Jahr</label>
+  <input id="feiertage_jahr" type="number" min="2025" max="2034" step="1" value="2025"/>
   <!-- in case of error, place script here and add defer keyword-->
   <button id="showHolidays" onClick="showHolidays();">Feiertage zeigen</button><br>
   <label for="holiday">Feiertag auswählen:</label>
@@ -66,7 +55,8 @@
     <option value="Fronleichnam">Fronleichnam</option>
   </select>
   <button id="selectHoliday" onClick="showSelectedHoliday();">Wählen</button>
-  <div id="holidays"></div>
+  <div class="content" id="holidays"></div>
+  </div>
   <script src="./holidays.js"></script>
   </body>
 </html>
