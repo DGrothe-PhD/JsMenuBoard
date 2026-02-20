@@ -56,7 +56,15 @@
   <div class="forest container">
   <input id="feiertage_jahr" type="number" min="2025" max="2034" step="1" value="2025">&nbsp;Jahr</input>
   <!-- in case of error, place script here and add defer keyword-->
-  <button id="showHolidays" onClick="showHolidays();">Feiertage zeigen</button>
+  <button id="showHolidays" onClick="showHolidays();">Feiertage zeigen</button><br>
+  <label for="vacation">Feiertag auswählen:</label>
+  <select name="vacation" id="vacation">
+    <option value="Karfreitag">Karfreitag</option>
+    <option value="Ostermontag">Ostermontag</option>
+    <option value="Christi Himmelfahrt">Christi Himmelfahrt</option>
+    <option value="Pfingstmontag">Pfingstmontag</option>
+    <option value="Fronleichnam">Fronleichnam</option>
+  </select> 
   <div id="holidays"></div>
   <script src="./holidays.js"></script>
   </body>
